@@ -5,7 +5,7 @@ import pandas  as pd
 import os
 import sys
 import json
-
+from Tushare.python.SQLutilities import *
 
 data_store_path = os.environ['STOCK']+'/data/'
 
@@ -39,11 +39,10 @@ def FetchIndividual(in_pro_api = None,  in_ts_code = None , in_adj = None , in_a
     df_basic = api_basic.daily_basic( ts_code = in_ts_code , start_date = list_date , end_date = in_end_date , fields = 'ts_code,trade_date,turnover_rate,turnover_rate_f,volume_ratio,pe,pe_ttm,pb,ps,ps_ttm,total_share,float_share,free_share,total_mv,circ_mv' )
     # Combine DataFrame
     df_all = pd.merge(df,df_basic, how='left', on=['ts_code','trade_date'])
-    print list(df_all.columns.values)[0]
-    df_all.to_csv( data_store_path+individual_file )
+    InsertDataToSQL(df_all,"test")
 
 if __name__ == '__main__':
 #    FetchIndividual( in_pro_api = ind_api, in_ts_code = '000001.SZ', in_adj = None , in_asset = 'E',in_start_date = '19900101' , in_end_date = '20190301', in_factors = [])
 #    FetchIndividual( in_pro_api = ind_api, in_ts_code = '600507.SH', in_adj = None , in_asset = 'E',in_start_date = '19900101' , in_end_date = '20190301', in_factors = [])
-    FetchIndividual( in_pro_api = ind_api, in_ts_code = '601398.SH', in_adj = None , in_asset = 'E',in_start_date = '20150101' , in_end_date = '20190401', in_factors = [])
+    FetchIndividual( in_pro_api = ind_api, in_ts_code = '601398.SH', in_adj = None , in_asset = 'E',in_start_date = '20190101' , in_end_date = '20190401', in_factors = [])
 
